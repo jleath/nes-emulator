@@ -184,7 +184,6 @@ void AND(Nes6502 *cpu, uint8_t data) {
 }
 
 void ASL(Nes6502 *cpu, int mem_address) {
-    set_flags(cpu, CARRY_FLAG, (cpu->a & 0x80) != 0);
     uint8_t new_value;
     if (mem_address == -1) {
         set_flags(cpu, CARRY_FLAG, (cpu->a & 0x80) != 0);
@@ -355,4 +354,196 @@ void DEC(Nes6502 *cpu, uint16_t mem_address) {
     set_flags(cpu, ZERO_FLAG, (new_value & 0x00ff) == 0);
     set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x0080) != 0);
     write(cpu->bus, mem_address, new_value & 0x00ff);
+}
+
+void DEX(Nes6502 *cpu) {
+    uint16_t new_value = cpu->x - 1;
+    set_flags(cpu, ZERO_FLAG, (new_value & 0x00ff) == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x0080) != 0);
+    cpu->x = new_value & 0x00ff;
+}
+
+void DEY(Nes6502 *cpu) {
+    uint16_t new_value = cpu->y - 1;
+    set_flags(cpu, ZERO_FLAG, (new_value & 0x00ff) == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x0080) != 0);
+    cpu->y = new_value & 0x00ff;
+}
+
+void EOR(Nes6502 *cpu, uint8_t data) {
+    uint8_t new_value = cpu->a ^ data;
+    set_flags(cpu, ZERO_FLAG, (new_value & 0x00ff) == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x80) != 0);
+    cpu->a = new_value;
+}
+
+void INC(Nes6502 *cpu, uint16_t mem_address) {
+    uint16_t data = read(cpu->bus, mem_address);
+    uint16_t new_value = data + 1;
+    set_flags(cpu, ZERO_FLAG, (new_value & 0x00ff) == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x0080) != 0);
+    write(cpu->bus, mem_address, new_value & 0x00ff);
+}
+
+void INX(Nes6502 *cpu) {
+    uint16_t new_value = cpu->x + 1;
+    set_flags(cpu, ZERO_FLAG, (new_value & 0x00ff) == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x0080) != 0);
+    cpu->x = new_value & 0x00ff;
+}
+
+void INY(Nes6502 *cpu) {
+    uint16_t new_value = cpu->y + 1;
+    set_flags(cpu, ZERO_FLAG, (new_value & 0x00ff) == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x0080) != 0);
+    cpu->y = new_value & 0x00ff;
+}
+
+void JMP(Nes6502 *cpu, uint16_t mem_address) {
+    cpu->pc = mem_address;
+}
+
+void JSR(Nes6502 *cpu, uint16_t mem_address) {
+    (cpu->pc)--;
+    write(cpu->bus, 0x0100 + cpu->sp, (cpu->pc >> 8) & 0x00ff);
+    (cpu->sp)--;
+    write(cpu->bus, 0x0100 + cpu->sp, cpu->pc & 0x00ff);
+    (cpu->sp)--;
+
+    cpu->pc = mem_address;
+}
+
+void LDA(Nes6502 *cpu, uint8_t data) {
+    cpu->a = data;
+    set_flags(cpu, ZERO_FLAG, cpu->a == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (cpu->a & 0x80) != 0);
+}
+
+void LDX(Nes6502 *cpu, uint8_t data) {
+    cpu->x = data;
+    set_flags(cpu, ZERO_FLAG, cpu->x == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (cpu->x & 0x80) != 0);
+}
+
+void LDY(Nes6502 *cpu, uint8_t data) {
+    cpu->y = data;
+    set_flags(cpu, ZERO_FLAG, cpu->y == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (cpu->y & 0x80) != 0);
+}
+
+void LSR(Nes6502 *cpu, int mem_address) {
+    uint8_t new_value;
+    if (mem_address == -1) {
+        set_flags(cpu, CARRY_FLAG, (cpu->a & 0x01) != 0);
+        new_value = cpu->a >> 1;
+        new_value = new_value & 0x7f;
+        cpu->a = new_value;
+    } else {
+        uint8_t curr_value = read(cpu->bus, mem_address);
+        set_flags(cpu, CARRY_FLAG, (curr_value & 0x01) != 0);
+        new_value = curr_value >> 1;
+        new_value = new_value & 0x7f;
+        write(cpu->bus, mem_address, new_value);
+    }
+    set_flags(cpu, ZERO_FLAG, (new_value & 0xff) == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x80) != 0);
+}
+
+void NOP(Nes6502 *cpu) {
+    return;
+}
+
+void ORA(Nes6502 *cpu, uint8_t data) {
+    uint8_t new_value = cpu->a | data;
+    set_flags(cpu, ZERO_FLAG, new_value == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x80) != 0);
+    cpu->a = new_value;
+}
+
+void PHA(Nes6502 *cpu) {
+    write(cpu->bus, 0x0100 + cpu->sp, cpu->a);
+    (cpu->sp)--;
+}
+
+void PHP(Nes6502 *cpu) {
+    // Break flag is set to 1 before the push to the stack
+    write(cpu->bus, 0x0100 + cpu->sp, cpu->flags | BREAK_FLAG);
+    set_flags(cpu, BREAK_FLAG, 0);
+    (cpu->sp)--;
+}
+
+void PLA(Nes6502 *cpu) {
+    (cpu->sp)++;
+    uint8_t data = read(cpu->bus, 0x0100 + cpu->sp);
+    set_flags(cpu, ZERO_FLAG, data == 0);
+    set_flags(cpu, NEGATIVE_FLAG, (data & 0x80) != 0);
+    cpu->a = data;
+}
+
+void PLP(Nes6502 *cpu) {
+    (cpu->sp)++;
+    uint8_t data = read(cpu->bus, 0x0100 + cpu->sp);
+    cpu->flags = data;
+}
+
+void ROL(Nes6502 *cpu, int mem_address) {
+    uint8_t old_carry = get_flag(cpu, CARRY_FLAG);
+    uint8_t new_carry;
+    uint8_t new_value;
+    if (mem_address == -1) {
+        new_carry = ((cpu->a & 0x80) >> 7) & 0x1;
+        cpu->a = cpu->a << 1;
+        cpu->a = cpu->a | old_carry;
+        new_value = cpu->a;
+    } else {
+        uint8_t old_value = read(cpu->bus, mem_address);
+        new_carry = ((old_value & 0x80) >> 7) & 0x1;
+        new_value = old_value << 1;
+        new_value = new_value | old_carry;
+        write(cpu->bus, mem_address, new_value);
+    }
+    set_flags(cpu, ZERO_FLAG, new_value == 0);
+    set_flags(cpu, CARRY_FLAG, new_carry);
+    set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x80) != 0);
+}
+
+void ROR(Nes6502 *cpu, int mem_address) {
+    uint8_t old_carry = get_flag(cpu, CARRY_FLAG);
+    uint8_t new_carry;
+    uint8_t new_value;
+    if (mem_address == -1) {
+        new_carry = cpu->a & 0x1;
+        cpu->a = cpu->a >> 1;
+        cpu->a = cpu->a | (old_carry << 7);
+        new_value = cpu->a;
+    } else {
+        uint8_t old_value = read(cpu->bus, mem_address);
+        new_carry = old_value & 0x1;
+        new_value = old_value >> 1;
+        new_value = new_value | (old_carry << 7);
+        write(cpu->bus, mem_address, new_value);
+    }
+    set_flags(cpu, ZERO_FLAG, new_value == 0);
+    set_flags(cpu, CARRY_FLAG, new_carry);
+    set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x80) != 0);
+}
+
+void RTI(Nes6502 *cpu) {
+    (cpu->sp)++;
+    uint8_t flags = read(cpu->bus, 0x0100 + cpu->sp);
+    (cpu->sp)++;
+    uint16_t low = read(cpu->bus, 0x0100 + cpu->sp);
+    (cpu->sp)++;
+    uint16_t high = read(cpu->bus, 0x0100 + cpu->sp);
+    cpu->flags = flags & ~BREAK_FLAG;
+    cpu->pc = low | (high << 8);
+}
+
+void RTS(Nes6502 *cpu) {
+    (cpu->sp)++;
+    uint8_t low = read(cpu->bus, 0x0100 + cpu->sp);
+    (cpu->sp)++;
+    uint8_t high = read(cpu->bus, 0x0100 + cpu->sp);
+    cpu->pc = low | (high << 8);
+    (cpu->pc)++;
 }

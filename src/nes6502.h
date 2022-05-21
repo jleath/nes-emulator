@@ -55,7 +55,6 @@ uint16_t indirectY(Nes6502 *cpu);
 // Operations
 void ADC(Nes6502 *cpu, uint8_t data);
 void AND(Nes6502 *cpu, uint8_t data);
-// passing in -1 for address if operation on accumulator
 void ASL(Nes6502 *cpu, int mem_address);
 void BCC(Nes6502 *cpu, uint8_t offset);
 void BCS(Nes6502 *cpu, uint8_t offset);
@@ -75,5 +74,27 @@ void CMP(Nes6502 *cpu, uint16_t mem_address);
 void CPX(Nes6502 *cpu, uint16_t mem_address);
 void CPY(Nes6502 *cpu, uint16_t mem_address);
 void DEC(Nes6502 *cpu, uint16_t mem_address);
+void DEX(Nes6502 *cpu);
+void DEY(Nes6502 *cpu);
+void EOR(Nes6502 *cpu, uint8_t data);
+void INC(Nes6502 *cpu, uint16_t mem_address);
+void INX(Nes6502 *cpu);
+void INY(Nes6502 *cpu);
+void JMP(Nes6502 *cpu, uint16_t mem_address);
+void JSR(Nes6502 *cpu, uint16_t mem_address);
+void LDA(Nes6502 *cpu, uint8_t data);
+void LDX(Nes6502 *cpu, uint8_t data);
+void LDY(Nes6502 *cpu, uint8_t data);
+void LSR(Nes6502 *cpu, int mem_address);
+void NOP(Nes6502 *cpu);
+void ORA(Nes6502 *cpu, uint8_t data);
+void PHA(Nes6502 *cpu);
+void PHP(Nes6502 *cpu);
+void PLA(Nes6502 *cpu);
+void PLP(Nes6502 *cpu);
+void ROL(Nes6502 *cpu, int mem_address);
+void ROR(Nes6502 *cpu, int mem_address);
+void RTI(Nes6502 *cpu);
+void RTS(Nes6502 *cpu);
 
 #endif
