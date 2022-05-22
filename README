@@ -2,8 +2,8 @@ An emulator for the Nintendo Entertainment System written in C.
 
 Work in Progress
 So far, I am working on the MOS 6502 cpu emulation.
- * Addressing modes have been implemented, but not yet fully tested.
- * Operations are not fully implemented, the file *ops.txt* lists all the operations
+ * Addressing modes have been Impliedlemented, but not yet fully tested.
+ * Operations are not fully Impliedlemented, the file *ops.txt* lists all the operations
 
 Once work is complete on the cpu emulation, I'll begin working on a testing program
 that will use a variety of existing test roms to ensure the cpu is emulated properly.

@@ -2,7 +2,7 @@ CC = gcc
 
 CFLAGS = -g -Wall -O0 -std=c99
 
-SOURCES = ./src/nes6502.c ./src/nes6502_test.c
+SOURCES = ./src/nes6502.c ./src/nes6502_test.c ./src/code_reader.c ./src/disassembly.c
 OBJECTS = $(SOURCES:.c=.o)
 TARGET = nes6502
 
