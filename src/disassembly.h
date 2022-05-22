@@ -5,6 +5,6 @@
 
 #include "nes6502.h"
 
-void print_disassembly(Nes6502 *cpu, char *op);
+void print_disassembly(Nes6502 *cpu, char *op, uint8_t cycles);
 
 #endif
