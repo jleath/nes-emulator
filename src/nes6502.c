@@ -6,13 +6,13 @@
 #include "disassembly.h"
 
 Nes6502Instruction operations[] = {
-    { "BRK", &BRK, &immediate, 7 },{ "ORA", &ORA, &indirectX, 6 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "???", &NOP, &implied, 3 },{ "ORA", &ORA, &zero_page, 3 },{ "ASL", &ASL, &zero_page, 5 },{ "???", NULL, &implied, 5 },{ "PHP", &PHP, &implied, 3 },{ "ORA", &ORA, &immediate, 2 },{ "ASL", &ASL, &implied, 2 },{ "???", NULL, &implied, 2 },{ "???", &NOP, &implied, 4 },{ "ORA", &ORA, &absolute, 4 },{ "ASL", &ASL, &absolute, 6 },{ "???", NULL, &implied, 6 },
+    { "BRK", &BRK, &immediate, 7 },{ "ORA", &ORA, &indirectX, 6 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "???", &NOP, &implied, 3 },{ "ORA", &ORA, &zero_page, 3 },{ "ASL", &ASL, &zero_page, 5 },{ "???", NULL, &implied, 5 },{ "PHP", &PHP, &implied, 3 },{ "ORA", &ORA, &immediate, 2 },{ "ASL", &ASL, &accumulator, 2 },{ "???", NULL, &implied, 2 },{ "???", &NOP, &implied, 4 },{ "ORA", &ORA, &absolute, 4 },{ "ASL", &ASL, &absolute, 6 },{ "???", NULL, &implied, 6 },
     { "BPL", &BPL, &relative, 2 },{ "ORA", &ORA, &indirectY, 5 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "???", &NOP, &implied, 4 },{ "ORA", &ORA, &zero_pageX, 4 },{ "ASL", &ASL, &zero_pageX, 6 },{ "???", NULL, &implied, 6 },{ "CLC", &CLC, &implied, 2 },{ "ORA", &ORA, &absoluteY, 4 },{ "???", &NOP, &implied, 2 },{ "???", NULL, &implied, 7 },{ "???", &NOP, &implied, 4 },{ "ORA", &ORA, &absoluteX, 4 },{ "ASL", &ASL, &absoluteX, 7 },{ "???", NULL, &implied, 7 },
-    { "JSR", &JSR, &absolute, 6 },{ "AND", &AND, &indirectX, 6 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "BIT", &BIT, &zero_page, 3 },{ "AND", &AND, &zero_page, 3 },{ "ROL", &ROL, &zero_page, 5 },{ "???", NULL, &implied, 5 },{ "PLP", &PLP, &implied, 4 },{ "AND", &AND, &immediate, 2 },{ "ROL", &ROL, &implied, 2 },{ "???", NULL, &implied, 2 },{ "BIT", &BIT, &absolute, 4 },{ "AND", &AND, &absolute, 4 },{ "ROL", &ROL, &absolute, 6 },{ "???", NULL, &implied, 6 },
+    { "JSR", &JSR, &absolute, 6 },{ "AND", &AND, &indirectX, 6 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "BIT", &BIT, &zero_page, 3 },{ "AND", &AND, &zero_page, 3 },{ "ROL", &ROL, &zero_page, 5 },{ "???", NULL, &implied, 5 },{ "PLP", &PLP, &implied, 4 },{ "AND", &AND, &immediate, 2 },{ "ROL", &ROL, &accumulator, 2 },{ "???", NULL, &implied, 2 },{ "BIT", &BIT, &absolute, 4 },{ "AND", &AND, &absolute, 4 },{ "ROL", &ROL, &absolute, 6 },{ "???", NULL, &implied, 6 },
     { "BMI", &BMI, &relative, 2 },{ "AND", &AND, &indirectY, 5 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "???", &NOP, &implied, 4 },{ "AND", &AND, &zero_pageX, 4 },{ "ROL", &ROL, &zero_pageX, 6 },{ "???", NULL, &implied, 6 },{ "SEC", &SEC, &implied, 2 },{ "AND", &AND, &absoluteY, 4 },{ "???", &NOP, &implied, 2 },{ "???", NULL, &implied, 7 },{ "???", &NOP, &implied, 4 },{ "AND", &AND, &absoluteX, 4 },{ "ROL", &ROL, &absoluteX, 7 },{ "???", NULL, &implied, 7 },
-    { "RTI", &RTI, &implied, 6 },{ "EOR", &EOR, &indirectX, 6 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "???", &NOP, &implied, 3 },{ "EOR", &EOR, &zero_page, 3 },{ "LSR", &LSR, &zero_page, 5 },{ "???", NULL, &implied, 5 },{ "PHA", &PHA, &implied, 3 },{ "EOR", &EOR, &immediate, 2 },{ "LSR", &LSR, &implied, 2 },{ "???", NULL, &implied, 2 },{ "JMP", &JMP, &absolute, 3 },{ "EOR", &EOR, &absolute, 4 },{ "LSR", &LSR, &absolute, 6 },{ "???", NULL, &implied, 6 },
+    { "RTI", &RTI, &implied, 6 },{ "EOR", &EOR, &indirectX, 6 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "???", &NOP, &implied, 3 },{ "EOR", &EOR, &zero_page, 3 },{ "LSR", &LSR, &zero_page, 5 },{ "???", NULL, &implied, 5 },{ "PHA", &PHA, &implied, 3 },{ "EOR", &EOR, &immediate, 2 },{ "LSR", &LSR, &accumulator, 2 },{ "???", NULL, &implied, 2 },{ "JMP", &JMP, &absolute, 3 },{ "EOR", &EOR, &absolute, 4 },{ "LSR", &LSR, &absolute, 6 },{ "???", NULL, &implied, 6 },
     { "BVC", &BVC, &relative, 2 },{ "EOR", &EOR, &indirectY, 5 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "???", &NOP, &implied, 4 },{ "EOR", &EOR, &zero_pageX, 4 },{ "LSR", &LSR, &zero_pageX, 6 },{ "???", NULL, &implied, 6 },{ "CLI", &CLI, &implied, 2 },{ "EOR", &EOR, &absoluteY, 4 },{ "???", &NOP, &implied, 2 },{ "???", NULL, &implied, 7 },{ "???", &NOP, &implied, 4 },{ "EOR", &EOR, &absoluteX, 4 },{ "LSR", &LSR, &absoluteX, 7 },{ "???", NULL, &implied, 7 },
-    { "RTS", &RTS, &implied, 6 },{ "ADC", &ADC, &indirectX, 6 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "???", &NOP, &implied, 3 },{ "ADC", &ADC, &zero_page, 3 },{ "ROR", &ROR, &zero_page, 5 },{ "???", NULL, &implied, 5 },{ "PLA", &PLA, &implied, 4 },{ "ADC", &ADC, &immediate, 2 },{ "ROR", &ROR, &implied, 2 },{ "???", NULL, &implied, 2 },{ "JMP", &JMP, &indirect, 5 },{ "ADC", &ADC, &absolute, 4 },{ "ROR", &ROR, &absolute, 6 },{ "???", NULL, &implied, 6 },
+    { "RTS", &RTS, &implied, 6 },{ "ADC", &ADC, &indirectX, 6 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "???", &NOP, &implied, 3 },{ "ADC", &ADC, &zero_page, 3 },{ "ROR", &ROR, &zero_page, 5 },{ "???", NULL, &implied, 5 },{ "PLA", &PLA, &implied, 4 },{ "ADC", &ADC, &immediate, 2 },{ "ROR", &ROR, &accumulator, 2 },{ "???", NULL, &implied, 2 },{ "JMP", &JMP, &indirect, 5 },{ "ADC", &ADC, &absolute, 4 },{ "ROR", &ROR, &absolute, 6 },{ "???", NULL, &implied, 6 },
     { "BVS", &BVS, &relative, 2 },{ "ADC", &ADC, &indirectY, 5 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 8 },{ "???", &NOP, &implied, 4 },{ "ADC", &ADC, &zero_pageX, 4 },{ "ROR", &ROR, &zero_pageX, 6 },{ "???", NULL, &implied, 6 },{ "SEI", &SEI, &implied, 2 },{ "ADC", &ADC, &absoluteY, 4 },{ "???", &NOP, &implied, 2 },{ "???", NULL, &implied, 7 },{ "???", &NOP, &implied, 4 },{ "ADC", &ADC, &absoluteX, 4 },{ "ROR", &ROR, &absoluteX, 7 },{ "???", NULL, &implied, 7 },
     { "???", &NOP, &implied, 2 },{ "STA", &STA, &indirectX, 6 },{ "???", &NOP, &implied, 2 },{ "???", NULL, &implied, 6 },{ "STY", &STY, &zero_page, 3 },{ "STA", &STA, &zero_page, 3 },{ "STX", &STX, &zero_page, 3 },{ "???", NULL, &implied, 3 },{ "DEY", &DEY, &implied, 2 },{ "???", &NOP, &implied, 2 },{ "TXA", &TXA, &implied, 2 },{ "???", NULL, &implied, 2 },{ "STY", &STY, &absolute, 4 },{ "STA", &STA, &absolute, 4 },{ "STX", &STX, &absolute, 4 },{ "???", NULL, &implied, 4 },
     { "BCC", &BCC, &relative, 2 },{ "STA", &STA, &indirectY, 6 },{ "???", NULL, &implied, 2 },{ "???", NULL, &implied, 6 },{ "STY", &STY, &zero_pageX, 4 },{ "STA", &STA, &zero_pageX, 4 },{ "STX", &STX, &zero_pageY, 4 },{ "???", NULL, &implied, 4 },{ "TYA", &TYA, &implied, 2 },{ "STA", &STA, &absoluteY, 5 },{ "TXS", &TXS, &implied, 2 },{ "???", NULL, &implied, 5 },{ "???", &NOP, &implied, 5 },{ "STA", &STA, &absoluteX, 5 },{ "???", NULL, &implied, 5 },{ "???", NULL, &implied, 5 },
@@ -46,10 +46,15 @@ void reset(Nes6502 *cpu) {
     uint8_t high = read(cpu->bus, 0xfffd);
     cpu->pc = (high << 8) | low;
     cpu->cycles = 8;
+    cpu->total_cycles += 8;
     cpu->mode = None;
     cpu->indirect_address = 0;
     cpu->absolute_address = 0;
     cpu->offset = 0;
+}
+
+int complete(Nes6502 *cpu) {
+    return cpu->cycles == 0;
 }
 
 void interrupt(Nes6502 *cpu) {
@@ -67,6 +72,7 @@ void interrupt(Nes6502 *cpu) {
         uint8_t high = read(cpu->bus, 0xffff);
         cpu->pc = (high << 8) | low;
         cpu->cycles = 7;
+        cpu->total_cycles += 7;
     }
 }
 
@@ -84,17 +90,25 @@ void non_maskable_interrupt(Nes6502 *cpu) {
     uint8_t high = read(cpu->bus, 0xfffb);
     cpu->pc = (high << 8) | low;
     cpu->cycles = 8;
+    cpu->total_cycles += 8;
 }
 
 void cycle(Nes6502 *cpu) {
     if (cpu->cycles <= 0) {
         uint8_t opcode = read(cpu->bus, cpu->pc);
-        cpu->pc++;
+        printf("%04x ", cpu->pc);
+        (cpu->pc)++;
         Nes6502Instruction op = operations[opcode];
         if (op.operation != NULL) {
             op.mode(cpu);
             cpu->cycles = op.cycles;
-            print_disassembly(cpu, op.opcode);
+            cpu->total_cycles += op.cycles;
+            print_disassembly(cpu, op.opcode, op.cycles);
+            if (cpu->add_cycles) {
+                cpu->cycles += cpu->add_cycles;
+                cpu->total_cycles += cpu->add_cycles;
+                cpu->add_cycles = 0;
+            }
             op.operation(cpu);
         } else {
             printf("Invalid opcode %02x\n", opcode);
@@ -157,7 +171,8 @@ void zero_page(Nes6502 *cpu) {
 void zero_pageX(Nes6502 *cpu) {
     cpu->mode = ZeroPageX;
     cpu->offset = cpu->x;
-    cpu->absolute_address = (read(cpu->bus, cpu->pc) + cpu->x) & 0x00ff;
+    cpu->indirect_address = (read(cpu->bus, cpu->pc));
+    cpu->absolute_address = (cpu->indirect_address + cpu->offset) & 0x00ff;
     (cpu->pc)++;
     cpu->data = read(cpu->bus, cpu->absolute_address);
 }
@@ -165,7 +180,8 @@ void zero_pageX(Nes6502 *cpu) {
 void zero_pageY(Nes6502 *cpu) {
     cpu->mode = ZeroPageY;
     cpu->offset = cpu->y;
-    cpu->absolute_address = (read(cpu->bus, cpu->pc) + cpu->y) &0x00ff;
+    cpu->indirect_address = (read(cpu->bus, cpu->pc));
+    cpu->absolute_address = (cpu->indirect_address + cpu->offset) & 0x00ff;
     (cpu->pc)++;
     cpu->data = read(cpu->bus, cpu->absolute_address);
 }
@@ -199,11 +215,11 @@ void absoluteX(Nes6502 *cpu) {
     (cpu->pc)++;
     uint16_t high = read(cpu->bus, cpu->pc);
     (cpu->pc)++;
-    cpu->absolute_address = (high << 8) | low;
-    if (((cpu->absolute_address + cpu->x) & 0xff00) != (high << 8)) {
-        cpu->cycles++;
+    cpu->absolute_address = (((high << 8) | low) + cpu->x) & 0xffff;
+    if ((cpu->absolute_address & 0xff00) != (high << 8) && read(cpu->bus, cpu->pc - 3) != 0x9d) {
+        cpu->add_cycles = 1;
     }
-    cpu->data = read(cpu->bus, cpu->absolute_address + cpu->x);
+    cpu->data = read(cpu->bus, cpu->absolute_address);
 }
 
 void absoluteY(Nes6502 *cpu) {
@@ -214,8 +230,8 @@ void absoluteY(Nes6502 *cpu) {
     uint16_t high = read(cpu->bus, cpu->pc);
     (cpu->pc)++;
     cpu->absolute_address = (high << 8) | low;
-    if (((cpu->absolute_address + cpu->x) & 0xff00) != (high << 8)) {
-        cpu->cycles++;
+    if (((cpu->absolute_address + cpu->y) & 0xff00) != (high << 8)) {
+        cpu->add_cycles = 1;
     }
     cpu->data = read(cpu->bus, cpu->absolute_address + cpu->y);
 }
@@ -262,7 +278,7 @@ void indirectY(Nes6502 *cpu) {
     uint16_t high = read(cpu->bus, (cpu->absolute_address + 1) & 0x00ff);
     cpu->indirect_address = ((high << 8) | low) + y;
     if ((cpu->indirect_address & 0xff00) != (high << 8)) {
-        (cpu->cycles)++;
+        cpu->add_cycles = 1;
     }
     cpu->data = read(cpu->bus, cpu->indirect_address);
 }
@@ -276,7 +292,7 @@ void ADC(Nes6502 *cpu) {
     set_flags(cpu, CARRY_FLAG, (new_value & 0xff00) != 0);
     set_flags(cpu, ZERO_FLAG, (new_value & 0x00ff) == 0);
     set_flags(cpu, NEGATIVE_FLAG, (new_value & 0x80) != 0);
-    set_flags(cpu, OVERFLOW_FLAG, ~((a ^ addend) & (a ^ new_value)) & 0x0080);
+    set_flags(cpu, OVERFLOW_FLAG, (((a ^ new_value) & (addend ^ new_value)) & 0x0080) != 0);
     cpu->a = (new_value & 0x00ff);
 }
 
@@ -304,10 +320,12 @@ void ASL(Nes6502 *cpu) {
 
 void BCC(Nes6502 *cpu) {
     if (!get_flag(cpu, CARRY_FLAG)) {
-        uint16_t new_address = cpu->pc + (uint16_t)cpu->data;
-        cpu->cycles++;
+        uint16_t new_address = cpu->absolute_address;
+        (cpu->cycles)++;
+        (cpu->total_cycles)++;
         if ((new_address & 0xff00) != (cpu->pc & 0xff00)) {
-            cpu->cycles++;
+            (cpu->cycles)++;
+            (cpu->total_cycles)++;
         }
         cpu->pc = new_address;
     }
@@ -315,10 +333,12 @@ void BCC(Nes6502 *cpu) {
 
 void BCS(Nes6502 *cpu) {
     if (get_flag(cpu, CARRY_FLAG)) {
-        uint16_t new_address = cpu->pc + (uint16_t)cpu->data;
-        cpu->cycles++;
+        uint16_t new_address = (uint16_t)cpu->absolute_address;
+        (cpu->cycles)++;
+        (cpu->total_cycles)++;
         if ((new_address & 0xff00) != (cpu->pc & 0xff00)) {
-            cpu->cycles++;
+            (cpu->cycles)++;
+            (cpu->total_cycles)++;
         }
         cpu->pc = new_address;
     }
@@ -326,10 +346,12 @@ void BCS(Nes6502 *cpu) {
 
 void BEQ(Nes6502 *cpu) {
     if (get_flag(cpu, ZERO_FLAG)) {
-        uint16_t new_address = cpu->pc + (uint16_t)cpu->data;
-        cpu->cycles++;
+        uint16_t new_address = cpu->absolute_address;
+        (cpu->cycles)++;
+        (cpu->total_cycles)++;
         if ((new_address & 0xff00) != (cpu->pc & 0xff00)) {
-            cpu->cycles++;
+            (cpu->cycles)++;
+            (cpu->total_cycles)++;
         }
         cpu->pc = new_address;
     }
@@ -343,10 +365,12 @@ void BIT(Nes6502 *cpu) {
 
 void BMI(Nes6502 *cpu) {
     if (get_flag(cpu, NEGATIVE_FLAG)) {
-        uint16_t new_address = cpu->pc + (uint16_t)cpu->data;
-        cpu->cycles++;
+        uint16_t new_address = cpu->absolute_address;
+        (cpu->cycles)++;
+        (cpu->total_cycles)++;
         if ((new_address & 0xff00) != (cpu->pc & 0xff00)) {
-            cpu->cycles++;
+            (cpu->cycles)++;
+            (cpu->total_cycles)++;
         }
         cpu->pc = new_address;
     }
@@ -354,10 +378,12 @@ void BMI(Nes6502 *cpu) {
 
 void BNE(Nes6502 *cpu) {
     if (!get_flag(cpu, ZERO_FLAG)) {
-        uint16_t new_address = cpu->pc + (uint16_t)cpu->data;
-        cpu->cycles++;
+        uint16_t new_address = cpu->absolute_address;
+        (cpu->cycles)++;
+        (cpu->total_cycles)++;
         if ((new_address & 0xff00) != (cpu->pc & 0xff00)) {
-            cpu->cycles++;
+            (cpu->cycles)++;
+            (cpu->total_cycles)++;
         }
         cpu->pc = new_address;
     }
@@ -365,10 +391,12 @@ void BNE(Nes6502 *cpu) {
 
 void BPL(Nes6502 *cpu) {
     if (!get_flag(cpu, NEGATIVE_FLAG)) {
-        uint16_t new_address = cpu->pc + (uint16_t)cpu->data;
-        cpu->cycles++;
+        uint16_t new_address = cpu->absolute_address;
+        (cpu->cycles)++;
+        (cpu->total_cycles)++;
         if ((new_address & 0xff00) != (cpu->pc & 0xff00)) {
-            cpu->cycles++;
+            (cpu->cycles)++;
+            (cpu->total_cycles)++;
         }
         cpu->pc = new_address;
     }
@@ -389,10 +417,12 @@ void BRK(Nes6502 *cpu) {
 
 void BVC(Nes6502 *cpu) {
     if (!get_flag(cpu, OVERFLOW_FLAG)) {
-        uint16_t new_address = cpu->pc + (uint16_t)cpu->data;
-        cpu->cycles++;
+        uint16_t new_address = cpu->absolute_address;
+        (cpu->cycles)++;
+        (cpu->total_cycles)++;
         if ((new_address & 0xff00) != (cpu->pc & 0xff00)) {
-            cpu->cycles++;
+            (cpu->cycles)++;
+            (cpu->total_cycles)++;
         }
         cpu->pc = new_address;
     }
@@ -400,10 +430,12 @@ void BVC(Nes6502 *cpu) {
 
 void BVS(Nes6502 *cpu) {
     if (get_flag(cpu, OVERFLOW_FLAG)) {
-        uint16_t new_address = cpu->pc + (uint16_t)cpu->data;
-        cpu->cycles++;
+        uint16_t new_address = cpu->absolute_address;
+        (cpu->cycles)++;
+        (cpu->total_cycles)++;
         if ((new_address & 0xff00) != (cpu->pc & 0xff00)) {
-            cpu->cycles++;
+            (cpu->cycles)++;
+            (cpu->total_cycles)++;
         }
         cpu->pc = new_address;
     }
@@ -414,8 +446,7 @@ void CLC(Nes6502 *cpu) {
 }
 
 void CLD(Nes6502 *cpu) {
-    // Decimal Mode not yet implemented, do nothing
-    return;
+    set_flags(cpu, DECIMAL_FLAG, 0);
 }
 
 void CLI(Nes6502 *cpu) {
@@ -567,8 +598,8 @@ void PHA(Nes6502 *cpu) {
 
 void PHP(Nes6502 *cpu) {
     // Break flag is set to 1 before the push to the stack
-    write(cpu->bus, 0x0100 + cpu->sp, cpu->flags | BREAK_FLAG);
-    set_flags(cpu, BREAK_FLAG, 0);
+    set_flags(cpu, BREAK_FLAG, 1);
+    write(cpu->bus, 0x0100 + cpu->sp, cpu->flags | UNUSED_FLAG);
     (cpu->sp)--;
 }
 
@@ -582,8 +613,12 @@ void PLA(Nes6502 *cpu) {
 
 void PLP(Nes6502 *cpu) {
     (cpu->sp)++;
+    uint8_t break_flag = get_flag(cpu, BREAK_FLAG);
+    uint8_t unused_flag = get_flag(cpu, UNUSED_FLAG);
     uint8_t data = read(cpu->bus, 0x0100 + cpu->sp);
     cpu->flags = data;
+    set_flags(cpu, BREAK_FLAG, break_flag);
+    set_flags(cpu, UNUSED_FLAG, unused_flag);
 }
 
 void ROL(Nes6502 *cpu) {
@@ -633,7 +668,11 @@ void RTI(Nes6502 *cpu) {
     uint16_t low = read(cpu->bus, 0x0100 + cpu->sp);
     (cpu->sp)++;
     uint16_t high = read(cpu->bus, 0x0100 + cpu->sp);
-    cpu->flags = flags & ~BREAK_FLAG;
+    uint8_t break_flag = get_flag(cpu, BREAK_FLAG);
+    uint8_t unused_flag = get_flag(cpu, UNUSED_FLAG);
+    cpu->flags = flags;
+    set_flags(cpu, BREAK_FLAG, break_flag);
+    set_flags(cpu, UNUSED_FLAG, unused_flag);
     cpu->pc = low | (high << 8);
 }
 
@@ -662,8 +701,7 @@ void SEC(Nes6502 *cpu) {
 }
 
 void SED(Nes6502 *cpu) {
-    // decimal operations not implemented
-    return;
+    set_flags(cpu, DECIMAL_FLAG, 1);
 }
 
 void SEI(Nes6502 *cpu) {

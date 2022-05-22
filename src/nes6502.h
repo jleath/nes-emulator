@@ -6,6 +6,8 @@
 #define CARRY_FLAG 0x01
 #define ZERO_FLAG 0x02
 #define INTERRUPT_DISABLE_FLAG 0x04
+#define DECIMAL_FLAG 0x08
+#define UNUSED_FLAG 0x10
 #define BREAK_FLAG 0x20
 #define OVERFLOW_FLAG 0x40
 #define NEGATIVE_FLAG 0x80
@@ -46,11 +48,13 @@ typedef struct Nes6502 {
     uint16_t pc;
     Bus *bus;
     uint8_t cycles;
+    int total_cycles;
     enum AddressingMode mode;
     uint16_t indirect_address;
     uint16_t absolute_address;
     uint8_t offset;
     uint8_t data;
+    int add_cycles;
 } Nes6502;
 
 typedef struct Nes6502Instruction {
@@ -61,6 +65,7 @@ typedef struct Nes6502Instruction {
 } Nes6502Instruction;
 
 void cycle(Nes6502 *cpu);
+int complete(Nes6502 *cpu);
 void reset(Nes6502 *cpu);
 void interrupt(Nes6502 *cpu);
 void non_maskable_interrupt(Nes6502 *cpu);
