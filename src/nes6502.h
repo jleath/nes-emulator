@@ -10,6 +10,23 @@
 #define OVERFLOW_FLAG 0x40
 #define NEGATIVE_FLAG 0x80
 
+enum AddressingMode{
+  Accumulator,
+  Implied,
+  Immediate,
+  ZeroPage,
+  ZeroPageX,
+  ZeroPageY,
+  Relative,
+  Absolute,
+  AbsoluteX,
+  AbsoluteY,
+  Indirect,
+  IndirectX,
+  IndirectY,
+  None,
+};
+
 typedef struct Bus {
     uint16_t memory_size;
     uint8_t *ram;
@@ -29,7 +46,19 @@ typedef struct Nes6502 {
     uint16_t pc;
     Bus *bus;
     uint8_t cycles;
+    enum AddressingMode mode;
+    uint16_t indirect_address;
+    uint16_t absolute_address;
+    uint8_t offset;
+    uint8_t data;
 } Nes6502;
+
+typedef struct Nes6502Instruction {
+    char *opcode;
+    void (*operation)(Nes6502*);
+    void (*mode)(Nes6502*);
+    uint8_t cycles;
+} Nes6502Instruction;
 
 void cycle(Nes6502 *cpu);
 void reset(Nes6502 *cpu);
@@ -39,62 +68,76 @@ uint8_t get_flag(Nes6502 *cpu, uint8_t flag);
 void set_flag(Nes6502 *cpu, uint8_t flag);
 
 // Addressing Modes
-uint16_t accumulator(Nes6502 *cpu);
-uint16_t immediate(Nes6502 *cpu);
-uint16_t zero_page(Nes6502 *cpu);
-uint16_t zero_pageX(Nes6502 *cpu);
-uint16_t zero_pageY(Nes6502 *cpu);
-uint16_t relative(Nes6502 *cpu);
-uint16_t absolute(Nes6502 *cpu);
-uint16_t absoluteX(Nes6502 *cpu);
-uint16_t absoluteY(Nes6502 *cpu);
-uint16_t indirect(Nes6502 *cpu);
-uint16_t indirectX(Nes6502 *cpu);
-uint16_t indirectY(Nes6502 *cpu);
+void implied(Nes6502 *cpu);
+void accumulator(Nes6502 *cpu);
+void immediate(Nes6502 *cpu);
+void zero_page(Nes6502 *cpu);
+void zero_pageX(Nes6502 *cpu);
+void zero_pageY(Nes6502 *cpu);
+void relative(Nes6502 *cpu);
+void absolute(Nes6502 *cpu);
+void absoluteX(Nes6502 *cpu);
+void absoluteY(Nes6502 *cpu);
+void indirect(Nes6502 *cpu);
+void indirectX(Nes6502 *cpu);
+void indirectY(Nes6502 *cpu);
 
 // Operations
-void ADC(Nes6502 *cpu, uint8_t data);
-void AND(Nes6502 *cpu, uint8_t data);
-void ASL(Nes6502 *cpu, int mem_address);
-void BCC(Nes6502 *cpu, uint8_t offset);
-void BCS(Nes6502 *cpu, uint8_t offset);
-void BEQ(Nes6502 *cpu, uint8_t offset);
-void BIT(Nes6502 *cpu, uint16_t mem_address);
-void BMI(Nes6502 *cpu, uint8_t offset);
-void BNE(Nes6502 *cpu, uint8_t offset);
-void BPL(Nes6502 *cpu, uint8_t offset);
+void ADC(Nes6502 *cpu);
+void AND(Nes6502 *cpu);
+void ASL(Nes6502 *cpu);
+void BCC(Nes6502 *cpu);
+void BCS(Nes6502 *cpu);
+void BEQ(Nes6502 *cpu);
+void BIT(Nes6502 *cpu);
+void BMI(Nes6502 *cpu);
+void BNE(Nes6502 *cpu);
+void BPL(Nes6502 *cpu);
 void BRK(Nes6502 *cpu);
-void BVC(Nes6502 *cpu, uint8_t offset);
-void BVS(Nes6502 *cpu, uint8_t offset);
+void BVC(Nes6502 *cpu);
+void BVS(Nes6502 *cpu);
 void CLC(Nes6502 *cpu);
 void CLD(Nes6502 *cpu);
 void CLI(Nes6502 *cpu);
 void CLV(Nes6502 *cpu);
-void CMP(Nes6502 *cpu, uint16_t mem_address);
-void CPX(Nes6502 *cpu, uint16_t mem_address);
-void CPY(Nes6502 *cpu, uint16_t mem_address);
-void DEC(Nes6502 *cpu, uint16_t mem_address);
+void CMP(Nes6502 *cpu);
+void CPX(Nes6502 *cpu);
+void CPY(Nes6502 *cpu);
+void DEC(Nes6502 *cpu);
 void DEX(Nes6502 *cpu);
 void DEY(Nes6502 *cpu);
-void EOR(Nes6502 *cpu, uint8_t data);
-void INC(Nes6502 *cpu, uint16_t mem_address);
+void EOR(Nes6502 *cpu);
+void INC(Nes6502 *cpu);
 void INX(Nes6502 *cpu);
 void INY(Nes6502 *cpu);
-void JMP(Nes6502 *cpu, uint16_t mem_address);
-void JSR(Nes6502 *cpu, uint16_t mem_address);
-void LDA(Nes6502 *cpu, uint8_t data);
-void LDX(Nes6502 *cpu, uint8_t data);
-void LDY(Nes6502 *cpu, uint8_t data);
-void LSR(Nes6502 *cpu, int mem_address);
+void JMP(Nes6502 *cpu);
+void JSR(Nes6502 *cpu);
+void LDA(Nes6502 *cpu);
+void LDX(Nes6502 *cpu);
+void LDY(Nes6502 *cpu);
+void LSR(Nes6502 *cpu);
 void NOP(Nes6502 *cpu);
-void ORA(Nes6502 *cpu, uint8_t data);
+void ORA(Nes6502 *cpu);
 void PHA(Nes6502 *cpu);
 void PHP(Nes6502 *cpu);
 void PLA(Nes6502 *cpu);
 void PLP(Nes6502 *cpu);
-void ROL(Nes6502 *cpu, int mem_address);
-void ROR(Nes6502 *cpu, int mem_address);
+void ROL(Nes6502 *cpu);
+void ROR(Nes6502 *cpu);
 void RTI(Nes6502 *cpu);
 void RTS(Nes6502 *cpu);
+void SBC(Nes6502 *cpu);
+void SEC(Nes6502 *cpu);
+void SED(Nes6502 *cpu);
+void SEI(Nes6502 *cpu);
+void STA(Nes6502 *cpu);
+void STX(Nes6502 *cpu);
+void STY(Nes6502 *cpu);
+void TAX(Nes6502 *cpu);
+void TAY(Nes6502 *cpu);
+void TSX(Nes6502 *cpu);
+void TXA(Nes6502 *cpu);
+void TXS(Nes6502 *cpu);
+void TYA(Nes6502 *cpu);
 
 #endif
